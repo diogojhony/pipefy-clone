@@ -40,12 +40,15 @@ const Card: React.FC<ICardProps> = ({ data, index, listIndex }) => {
     accept: 'CARD',
     hover(item: IDragItem, monitor) {
       const draggedListIndex = item.listIndex;
-      // const targetListIndex = listIndex;
+      const targetListIndex = listIndex;
 
       const draggedIndex = item.index;
       const targetIndex = index;
 
-      if (draggedIndex === targetIndex) {
+      if (
+        draggedIndex === targetIndex &&
+        draggedListIndex === targetListIndex
+      ) {
         return;
       }
 
@@ -65,9 +68,10 @@ const Card: React.FC<ICardProps> = ({ data, index, listIndex }) => {
         return;
       }
 
-      move(draggedListIndex, draggedIndex, targetIndex);
+      move(draggedListIndex, targetListIndex, draggedIndex, targetIndex);
 
       item.index = targetIndex;
+      item.listIndex = targetListIndex;
     },
   });
 

@@ -24,15 +24,13 @@ const Board: React.FC = () => {
     loadLists();
   }, []);
 
-  function move(fromList: number, from: number, to: number) {
-    console.log(fromList, from, to);
-
+  function move(fromList: number, toList: number, from: number, to: number) {
     setLists(
       produce(lists, (draft) => {
         const dragged = draft[fromList].cards[from];
 
         draft[fromList].cards.splice(from, 1);
-        draft[fromList].cards.splice(to, 0, dragged);
+        draft[toList].cards.splice(to, 0, dragged);
       })
     );
   }
