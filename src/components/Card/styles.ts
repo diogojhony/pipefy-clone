@@ -39,7 +39,7 @@ export const Container = styled.div<IContainer>`
       padding-top: 31px;
       border-radius: 0;
       background: transparent;
-      box-shadow: node;
+      box-shadow: none;
       cursor: grabbing;
 
       p,

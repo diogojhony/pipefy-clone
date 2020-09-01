@@ -1,5 +1,5 @@
-import React from 'react';
-import { useDrag } from 'react-dnd';
+import React, { useRef } from 'react';
+import { useDrag, useDrop } from 'react-dnd';
 
 import { Container, Label } from './styles';
 
@@ -10,20 +10,60 @@ export interface ICard {
   user: string;
 }
 
+interface IDragItem {
+  type: string;
+  index: number;
+}
+
 interface ICardProps {
+  index: number;
   data: ICard;
 }
 
-const Card: React.FC<ICardProps> = ({ data }) => {
+const Card: React.FC<ICardProps> = ({ index, data }) => {
+  const ref = useRef<HTMLDivElement>(null);
+
   const [{ isDragging }, dragRef] = useDrag({
-    item: { type: 'CARD' },
+    item: { type: 'CARD', index },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
 
+  const [, dropRef] = useDrop({
+    accept: 'CARD',
+    hover(item: IDragItem, monitor) {
+      const draggedIndex = item.index;
+      const targetIndex = index;
+
+      if (draggedIndex === targetIndex) {
+        return;
+      }
+
+      const targetSize = ref.current?.getBoundingClientRect();
+
+      const targetCenter =
+        ((targetSize?.bottom ?? 0) - (targetSize?.top ?? 0)) / 2;
+
+      const draggedOffSet = monitor.getClientOffset();
+      const draggedTop = (draggedOffSet?.y ?? 0) - (targetSize?.top ?? 0);
+
+      if (draggedIndex < targetIndex && draggedTop < targetCenter) {
+        return;
+      }
+
+      if (draggedIndex > targetIndex && draggedTop > targetCenter) {
+        return;
+      }
+
+      console.log('Test');
+    },
+  });
+
+  dragRef(dropRef(ref));
+
   return (
-    <Container ref={dragRef} isDragging={isDragging}>
+    <Container ref={ref} isDragging={isDragging}>
       <header>
         {data.labels.map((label) => (
           <Label key={label} color={label} />
