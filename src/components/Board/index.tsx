@@ -4,6 +4,8 @@ import List, { IList } from '../List';
 
 import api from '../../services/api';
 
+import BoardContext from './contex';
+
 import { Container } from './styles';
 
 const Board: React.FC = () => {
@@ -21,12 +23,18 @@ const Board: React.FC = () => {
     loadLists();
   }, []);
 
+  function move(from: number, to: number) {
+    console.log(from, to);
+  }
+
   return (
-    <Container>
-      {lists.map((list) => (
-        <List key={list.title} data={list} />
-      ))}
-    </Container>
+    <BoardContext.Provider value={{ lists, move }}>
+      <Container>
+        {lists.map((list) => (
+          <List key={list.title} data={list} />
+        ))}
+      </Container>
+    </BoardContext.Provider>
   );
 };
 

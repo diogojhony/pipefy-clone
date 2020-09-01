@@ -1,5 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useRef, useContext } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
+
+import BoardContext from '../Board/contex';
 
 import { Container, Label } from './styles';
 
@@ -22,6 +24,8 @@ interface ICardProps {
 
 const Card: React.FC<ICardProps> = ({ index, data }) => {
   const ref = useRef<HTMLDivElement>(null);
+
+  const { move } = useContext(BoardContext);
 
   const [{ isDragging }, dragRef] = useDrag({
     item: { type: 'CARD', index },
@@ -56,7 +60,7 @@ const Card: React.FC<ICardProps> = ({ index, data }) => {
         return;
       }
 
-      console.log('Test');
+      move(draggedIndex, targetIndex);
     },
   });
 
