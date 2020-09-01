@@ -14,9 +14,10 @@ export interface IList {
 
 interface IListProps {
   data: IList;
+  index: number;
 }
 
-const List: React.FC<IListProps> = ({ data }) => {
+const List: React.FC<IListProps> = ({ data, index: listIndex }) => {
   return (
     <Container done={data.done}>
       <header>
@@ -30,7 +31,7 @@ const List: React.FC<IListProps> = ({ data }) => {
 
       <ul>
         {data.cards.map((card, index) => (
-          <Card key={card.id} index={index} data={card} />
+          <Card key={card.id} listIndex={listIndex} index={index} data={card} />
         ))}
       </ul>
     </Container>

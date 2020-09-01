@@ -15,20 +15,22 @@ export interface ICard {
 interface IDragItem {
   type: string;
   index: number;
+  listIndex: number;
 }
 
 interface ICardProps {
-  index: number;
   data: ICard;
+  index: number;
+  listIndex: number;
 }
 
-const Card: React.FC<ICardProps> = ({ index, data }) => {
+const Card: React.FC<ICardProps> = ({ data, index, listIndex }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const { move } = useContext(BoardContext);
 
   const [{ isDragging }, dragRef] = useDrag({
-    item: { type: 'CARD', index },
+    item: { type: 'CARD', index, listIndex },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -37,6 +39,9 @@ const Card: React.FC<ICardProps> = ({ index, data }) => {
   const [, dropRef] = useDrop({
     accept: 'CARD',
     hover(item: IDragItem, monitor) {
+      const draggedListIndex = item.listIndex;
+      // const targetListIndex = listIndex;
+
       const draggedIndex = item.index;
       const targetIndex = index;
 
@@ -60,7 +65,9 @@ const Card: React.FC<ICardProps> = ({ index, data }) => {
         return;
       }
 
-      move(draggedIndex, targetIndex);
+      move(draggedListIndex, draggedIndex, targetIndex);
+
+      item.index = targetIndex;
     },
   });
 
