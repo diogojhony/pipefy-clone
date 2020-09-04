@@ -24,7 +24,7 @@
   <a href="#-license">License</a>
 </p>
 
-<img alt="Layout" src=".github/banner.png">
+<!-- <img alt="Layout" src=".github/banner.png"> -->
 
 ## 🚀 Technologies
 
